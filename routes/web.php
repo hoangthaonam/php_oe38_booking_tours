@@ -23,6 +23,7 @@ Route::group([
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::resource('tour', 'TourController');
         Route::resource('/category','CategoryController');
+        Route::resource('/payment','PaymentController');
     });
     
 });
@@ -46,6 +47,10 @@ Route::group(['namespace'=>'User'], function(){
     Route::post('comment/update', 'CommentController@update')->middleware('auth')->name('comment.update');
     Route::delete('comment/destroy', 'CommentController@destroy')->middleware('auth')->name('comment.destroy');
 
+    Route::group(['middleware' => 'auth'], function(){
+        Route::resource('booktour','BookTourController');
+        Route::get('booking/infor/{id}','BookTourController@displayBookingInformation')->name('booking.infor');
+    });
 });
 
 // i18

@@ -29,7 +29,7 @@
     <!-- //testimonials -->
     @include('client.layouts.footer')
     <script type="text/javascript" src="{{ mix('js/client.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('js/ajax.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/myJS.js') }}"></script>
     <script type="text/javascript" src="{{ mix('js/jquery-3.5.1.min.js') }}"></script>
 </body>
 

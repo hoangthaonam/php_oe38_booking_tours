@@ -4,6 +4,12 @@ return [
     'admin_role' => 1,
     'user_role' => 0,
     'paginate_number' => 5,
+    'comment_type' => 1,
+    'review_type' => 2,
+    'normal' => 'normal',
+    'banking' => 'banking',
+    'unpaid' => 0,
+    'paid' => 1,
 
     /*
     |--------------------------------------------------------------------------

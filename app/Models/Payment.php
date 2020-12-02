@@ -16,12 +16,12 @@ class Payment extends Model
     protected $fillable = [ 
         'payment_method', 
         'payment_status',
-        'bank_id',
+        'booktour_id',
         'status',
     ];
 
     public function booktour()
     {
-        return $this->belongsTo(BookTour::class,'booktour_id','booktour_id');
+        return $this->hasOne(BookTour::class,'booktour_id','booktour_id');
     }
 }
