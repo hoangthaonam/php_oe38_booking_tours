@@ -21,7 +21,6 @@ class CreateRatingTable extends Migration
             $table->float('rating');
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
-            $table->softDeletes(); 
         });
         Schema::enableForeignKeyConstraints();
     }

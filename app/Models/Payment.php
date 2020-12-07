@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
-    use SoftDeletes;
-
     protected $table = "payment";
     
     protected $primaryKey = "payment_id";

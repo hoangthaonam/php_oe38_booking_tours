@@ -31,7 +31,6 @@ class CreateToursTable extends Migration
             $table->integer('category_id')->unsigned();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
-            $table->softDeletes(); 
         });
         Schema::enableForeignKeyConstraints();
     }

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookTour extends Model
 {
-    use SoftDeletes;
-
     protected $table = "booktour";
 
     protected $primaryKey = "booktour_id";
@@ -32,5 +30,12 @@ class BookTour extends Model
     public function payment()
     {
         return $this->belongsTo(Payment::class, 'booktour_id', 'booktour_id');
+    }
+
+    public function delete()
+    {
+        $this->booktourdetails()->delete();
+        $this->payment()->delete();
+        return parent::delete();
     }
 }

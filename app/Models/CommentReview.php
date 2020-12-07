@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CommentReview extends Model
 {
-    use SoftDeletes;
-
     protected $table = "commentreviews";
  
     protected $primaryKey = "cmr_id";

@@ -23,7 +23,6 @@ class CreateBooktourdetailsTable extends Migration
             $table->decimal('price', 15, 2);
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
-            $table->softDeletes(); 
         });
         Schema::enableForeignKeyConstraints();
     }

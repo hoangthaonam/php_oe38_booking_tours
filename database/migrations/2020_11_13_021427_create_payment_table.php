@@ -21,7 +21,6 @@ class CreatePaymentTable extends Migration
             $table->integer('booktour_id')->unsigned();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
-            $table->softDeletes(); 
         });
         Schema::enableForeignKeyConstraints();
     }

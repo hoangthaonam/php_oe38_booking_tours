@@ -23,7 +23,6 @@ class CreateCommentreviewTable extends Migration
             $table->integer('parent_id')->unsigned()->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
-            $table->softDeletes(); 
         });
         Schema::enableForeignKeyConstraints();
     }
