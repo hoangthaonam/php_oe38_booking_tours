@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Like extends Model
 {
-    use SoftDeletes;
-
     protected $table = "likes";
     
     protected $primaryKey = "like_id";

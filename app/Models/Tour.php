@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tour extends Model
 {
-    use SoftDeletes;
-
     protected $table = "tours";
 
     protected $primaryKey = "tour_id";

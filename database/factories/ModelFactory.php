@@ -23,6 +23,7 @@ $factory->define(\App\Models\User::class, function (Faker\Generator $faker) {
         'address' => $faker->address,
         'phone' => $faker->phoneNumber,
         'image' => $faker->name,
+        'role' => $faker->numberBetween(0,1),
         'remember_token' => str_random(10),
     ];
 });
@@ -47,7 +48,7 @@ $factory->define(\App\Models\Tour::class, function (Faker\Generator $faker) {
         'place_to' => $faker->country,
         'place_tobe' => $faker->country,
         'duration' => $faker->numberBetween(1,5),
-        'price' => $faker->numberBetween(1000,5000),
+        'price' => $faker->numberBetween(10000,50000),
         'hotel_star' => $faker->numberBetween(1,5),
         'des' => $faker->text(100),
         'quantity_people' => $faker->numberBetween(1,5),
@@ -95,10 +96,11 @@ $factory->define(\App\Models\BookTour::class, function (Faker\Generator $faker) 
 
 //Payment
 $factory->define(\App\Models\Payment::class, function (Faker\Generator $faker) {
+    $payment_method = $faker->randomElement(['banking', 'normal']);
     return [
-        'payment_method' => $faker->word,
+        'payment_method' => $payment_method,
         'booktour_id' => $faker->numberBetween(1,10),
-        'payment_status' => $faker->numberBetween(1,2)
+        'payment_status' => $payment_method == 'normal' ? $faker->numberBetween(0,1) : 1,
     ];
 });
 
