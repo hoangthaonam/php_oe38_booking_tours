@@ -31,6 +31,10 @@
 
                         <a class="nav-link" href="{{route('logout')}}" class="btn btn-default btn-rounded">@lang('language.logout')</a>
                     </li>
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="{{route('booktour.index')}}" class="btn btn-default btn-rounded">@lang('language.my_tour')</a>
+                    </li>
                     @else
                         <li class="nav-item">
 

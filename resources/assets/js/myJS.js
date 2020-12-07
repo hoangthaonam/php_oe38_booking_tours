@@ -59,3 +59,13 @@ function destroy(cmr_id){
         }
     });
 }
+function updateTotalPrice(element){
+    let quantity_people = element.value;
+    let price = document.getElementById("price").value;
+    document.getElementById("total_price").innerHTML = price * quantity_people + "  VND";
+    document.getElementById("amount").value = price * quantity_people;
+}
+function changePaymentMethod(element){
+    let url = $(element).data('url');
+    document.getElementById('book_form').action = url;
+}

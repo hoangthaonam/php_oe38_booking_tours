@@ -58,7 +58,7 @@ return [
     'duration' => 'Thời gian',
     'price' => 'Giá',
     'hotel_star' => 'Khách sạn',
-    'quantity_people' => 'Só lượng người',
+    'quantity_people' => 'Số lượng người',
     'booking_number' => 'Số người đặt',
     'des' => 'Mô tả',
     'category' => 'Loại tour',
@@ -93,5 +93,4 @@ return [
     'register' => 'Đăng ký',
     'confim' => 'Nhập lại mật khẩu',
     'back' => 'Trở lại',
-    'update' => 'Cập nhật', 
 ];

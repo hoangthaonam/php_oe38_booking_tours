@@ -43,6 +43,12 @@
             </div>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{route('admin.payment.index')}}">
+            <i class="fas fa-money-bill" aria-hidden="true"></i>
+            <span>@lang('language.tour_booked')</span>
+        </a>
+    </li>
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
