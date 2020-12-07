@@ -31,11 +31,4 @@ class BookTour extends Model
     {
         return $this->belongsTo(Payment::class, 'booktour_id', 'booktour_id');
     }
-
-    public function delete()
-    {
-        $this->booktourdetails()->delete();
-        $this->payment()->delete();
-        return parent::delete();
-    }
 }

@@ -58,11 +58,6 @@ class User extends Authenticatable
         return $this->hasMany(CommentReview::class, 'user_id', 'user_id');
     }
 
-    public function bankaccounts()
-    {
-        return $this->hasMany(BankAccount::class, 'user_id', 'user_id');
-    }
-
     public function likes()
     {
         return $this->hasMany(Like::class, 'user_id', 'user_id');
