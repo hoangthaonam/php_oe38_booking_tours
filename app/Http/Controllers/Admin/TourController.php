@@ -44,7 +44,7 @@ class TourController extends Controller
         $tour = $request->all();
         $tour['slug'] = str_slug($request->name);
         $tour['booking_number'] = 0;
-        $tour['image'] = $this->getImage($request->file('image'));
+        $tour['image'] = $request->file('image') ? $this->getImage($request->file('image')) : 'default.jpg';
         Tour::create($tour);
         return redirect()->route('admin.tour.index');
     }
@@ -89,7 +89,7 @@ class TourController extends Controller
         $tour = $this->checkTourExist($id);
         if($tour){
             $tour->fill($request->except('image'));
-            $tour['image'] = $this->getImage($request->file('image'));
+            $tour['image'] = $request->file('image') ? $this->getImage($request->file('image')) : 'default.jpg';
             $tour->save();
         }
         return redirect()->route('admin.tour.index');
