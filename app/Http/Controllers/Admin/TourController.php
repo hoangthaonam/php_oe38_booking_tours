@@ -7,10 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use App\Models\Category;
 use App\Http\Requests\TourRequest;
+use App\Repositories\Tour\TourRepositoryInterface;
 use Session;
 
 class TourController extends Controller
 {
+    protected $tourRepo; 
+
+    public function __construct(TourRepositoryInterface $tourRepo) {
+        $this->tourRepo = $tourRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +24,7 @@ class TourController extends Controller
      */
     public function index()
     {
-        $tours = Tour::with('category')->get();
+        $tours = $this->tourRepo->display();
         return view('admin.pages.tour.index', compact('tours'));
     }
 
@@ -29,7 +35,7 @@ class TourController extends Controller
      */
     public function create()
     {
-        $categories = Category::get();
+        $categories = $this->tourRepo->getCategory();
         return view('admin.pages.tour.create_tour', compact('categories'));
     }
 
@@ -44,8 +50,8 @@ class TourController extends Controller
         $tour = $request->all();
         $tour['slug'] = str_slug($request->name);
         $tour['booking_number'] = 0;
-        $tour['image'] = $this->getImage($request->file('image'));
-        Tour::create($tour);
+        $tour['image'] = $request->file('image') ? $this->getImage($request->file('image')) : 'default.jpg';
+        $this->tourRepo->create($tour);
         return redirect()->route('admin.tour.index');
     }
 
@@ -68,9 +74,9 @@ class TourController extends Controller
      */
     public function edit($id)
     {
-        $tour = $this->checkTourExist($id);
+        $tour = $this->tourRepo->checkTourExist($id);
         if($tour){
-            $categories = Category::get();
+            $categories = $this->tourRepo->getCategory();
             return view('admin.pages.tour.edit_tour', compact('tour','categories'));
         } else {
             return redirect()->route('admin.tour.index');  
@@ -86,11 +92,11 @@ class TourController extends Controller
      */
     public function update(TourRequest $request, $id)
     {
-        $tour = $this->checkTourExist($id);
-        if($tour){
-            $tour->fill($request->except('image'));
-            $tour['image'] = $this->getImage($request->file('image'));
-            $tour->save();
+        $tour = $request->except('image');
+        $tour['image'] = $request->file('image') ? $this->getImage($request->file('image')) : 'default.jpg';
+        $result = $this->tourRepo->update($id, $tour);
+        if(!$result){
+            Session::flash('Error', trans('language.error.error_find'));
         }
         return redirect()->route('admin.tour.index');
     }
@@ -103,19 +109,11 @@ class TourController extends Controller
      */
     public function destroy($id)
     {
-        Tour::find($id)->delete();
-        return redirect()->route('admin.tour.index');
-    }
-
-    public function checkTourExist($id)
-    {
-        $tour = Tour::find($id);
-        if(!$tour){
-            Session::flash('Error', trans('language.error.error_find'));
-            return false;
-        } else {
-            return $tour;
+        $tour = $this->tourRepo->checkTourExist($id);
+        if($tour){
+            $this->tourRepo->delete($id);
         }
+        return redirect()->route('admin.tour.index');
     }
 
     public function getImage($imageFile)
