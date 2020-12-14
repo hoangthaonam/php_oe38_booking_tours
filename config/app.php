@@ -10,6 +10,9 @@ return [
     'banking' => 'banking',
     'unpaid' => 0,
     'paid' => 1,
+    'password_test_fail' => env('password_test_fail'),
+    'password_test_success' => env('password_test_success'),
+    'username_test' => env('username_test'),
 
     /*
     |--------------------------------------------------------------------------
@@ -185,6 +188,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Laravel\Dusk\DuskServiceProvider::class,
 
     ],
 
