@@ -10,6 +10,9 @@ return [
     'banking' => 'banking',
     'unpaid' => 0,
     'paid' => 1,
+    'password_test_success' => env('password_test_success'),
+    'password_test_fail' => env('password_test_fail'),
+    'username_test' => env('username_test'),
 
     /*
     |--------------------------------------------------------------------------
