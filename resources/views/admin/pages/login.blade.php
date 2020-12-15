@@ -16,7 +16,7 @@
   <p class="help is-danger">{{ $errors->first('username') }}</p>
   <input type="password" name="password" class="login-password" required="true" placeholder="Password" />
   <p class="help is-danger">{{ $errors->first('password') }}</p>
-  <input type="submit" name="Login" value="Login" class="login-submit" />
+  <input type="submit" id="btn_login" name="Login" value="Login" class="login-submit" />
   <div> @include('Common.Error') </div>
 </form>
 <div class="underlay-photo"></div>
