@@ -7,10 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\BookTour;
 use App\Models\BookTourDetails;
 use App\Http\Requests\BookTourRequest;
+use App\Repositories\User\BookTour\BookTourRepositoryInterface;
 use Auth;
 
 class BookTourController extends Controller
 {
+    protected $booktourRepo;
+
+    public function __construct(BookTourRepositoryInterface $booktourRepo) {
+        $this->booktourRepo = $booktourRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +24,7 @@ class BookTourController extends Controller
      */
     public function index()
     {
-        $booktours = BookTour::with('payment')->where('user_id', Auth::user()->user_id)->get();
+        $booktours = $this->booktourRepo->getOwnerBookTour();
         return view('client.layouts.mytour', compact('booktours'));
     }
 
@@ -40,20 +46,14 @@ class BookTourController extends Controller
      */
     public function store(BookTourRequest $request)
     {
-        $booktour['user_id'] = Auth::user()->user_id;
-        $newBooktour = BookTour::create($booktour);
-        $booktourdetails['tour_id'] = $request->tour_id;
-        $booktourdetails['booktour_id'] = $newBooktour->booktour_id;
-        $booktourdetails['tour_name'] = $request->name;
-        $booktourdetails['quantity_people'] = $request->quantity_people;
-        $booktourdetails['price'] = $request->amount;
-        $booktourdetails =  BookTourDetails::create($booktourdetails);
+        $data = $request->all();
+        $booktourdetails = $this->booktourRepo->createNewBookTour($data);
         return redirect()->route('booking.infor',$booktourdetails->booktourdetails_id);
     }
     
     public function displayBookingInformation($id)
     {
-        $booktourdetails = BookTourDetails::find($id);
+        $booktourdetails = $this->booktourRepo->find($id);
         return view('client.layouts.booktour_detail', compact('booktourdetails'));
     }
     /**
