@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories\Tour;
+namespace App\Repositories\Admin\Tour;
 
 interface TourRepositoryInterface {
     public function display();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Tour;
+namespace App\Repositories\Admin\Tour;
 use App\Repositories\BaseRepository;
 use App\Models\Category;
 use Session;
