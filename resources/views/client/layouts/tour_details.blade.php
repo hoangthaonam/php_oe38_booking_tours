@@ -31,7 +31,7 @@
         <div class="row mt-2">
           <div class="col-md-6">
             <label for="name"><b>{{trans('language.name')}}</b></label>
-            <input type="text" name="name" class="form-control" value="{{$tour->name}}" readonly />
+            <input type="text" name="tour_name" class="form-control" value="{{$tour->name}}" readonly />
           </div>
           <div class="col-md-6">
             <label for=""><b>{{trans('language.place_from')}}</b></label>
