@@ -44,6 +44,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\User\Payment\PaymentRepository::class
         );
         $this->app->singleton(
+            \App\Repositories\Admin\Payment\PaymentRepositoryInterface::class,
+            \App\Repositories\Admin\Payment\PaymentRepository::class
+        );
+        $this->app->singleton(
             \App\Repositories\User\Social\SocialRepositoryInterface::class,
             \App\Repositories\User\Social\SocialRepository::class
         );

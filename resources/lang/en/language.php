@@ -114,4 +114,5 @@ return [
     'tour_booked' => 'Tour booked',
     'date_created' => 'Date Created',
     'update_success' => 'Update Success!',
+    'email_subject' => 'Booking Tour Email',
 ];

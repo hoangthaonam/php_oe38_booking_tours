@@ -7,11 +7,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\BookTour;
 use App\Models\BookTourDetails;
+use App\Repositories\User\Payment\PaymentRepositoryInterface;
 use Session;
 use Mail;
 
 class PaymentController extends Controller
 {
+    protected $paymentRepo;
+
+    public function __construct(PaymentRepositoryInterface $paymentRepo) {
+        $this->paymentRepo = $paymentRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -51,29 +57,22 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $payment = $this->getData($id);
+        $payment = $this->paymentRepo->getDataPayment($id);
         if($payment){
+
             return view('client.layouts.payment_details', compact('payment'));
         }
-        return redirect()->route('booktour.index');
-    }
 
-    public function getData($id)
-    {
-        $payment = Payment::with('booktour.user', 'booktour.booktourdetails.tour')->where('payment_id', $id)->first();
-        if(!$payment){
-            Session::flash('Error', trans('language.error.error_find'));
-            return false;
-        }
-        return $payment;
+        return redirect()->route('booktour.index');
     }
 
     public function createNormalPayment(Request $request)
     {
         $payment = $request->only('payment_method', 'booktour_id');
         $payment['payment_status'] = config('app.unpaid');
-        $payment = Payment::create($payment);
+        $payment = $this->paymentRepo->create($payment);
         $this->sendEmail($payment->payment_id);
+
         return redirect()->route('payment.show',$payment->payment_id);
     }
     
@@ -81,21 +80,22 @@ class PaymentController extends Controller
     {
         $payment = Session::get('payment');
         Session::forget('payment');
-        $payment = Payment::create($payment);
+        $payment = $this->paymentRepo->create($payment);
         $this->sendEmail($payment->payment_id);
+
         return redirect()->route('payment.show',$payment->payment_id);
     }
 
     public function sendEmail($id)
     {   
-        $payment = $this->getData($id);
+        $payment = $this->paymentRepo->getDataPayment($id);
         if($payment){
             $name = $payment->booktour->user->name;
             Mail::send('client.layouts.bill', [
                 'payment' => $payment,
             ], function($mail) use ($name){
                 $mail->to(config('app.mail_test'), $name);
-                $mail->subject('Email Order');
+                $mail->subject(trans('language.email_subject')); 
             });
         }
     }

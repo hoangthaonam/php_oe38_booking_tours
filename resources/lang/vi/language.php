@@ -115,4 +115,5 @@ return [
     'tour_booked' => 'Tour đã đặt',
     'date_created' => 'Ngày tạo',
     'update_success' => 'Cập nhật thành công!',
+    'email_subject' => 'Email Đặt Tour',
 ];

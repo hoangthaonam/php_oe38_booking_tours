@@ -8,16 +8,29 @@
   @include('Common.Success') 
   @include('Common.Error')
   <div class="p-3 py-5">
-      <div class="row mt-2">
-          <div class="col-md-6">
-              <label for="name"><b>{{trans('language.tour_name')}}</b></label>
-              <input type="text" name="name" class="form-control" value="{{$booktourdetails->tour_name}}" readonly />
-          </div>
-          <div class="col-md-6">
-              <label for="name"><b>{{trans('language.price')}}</b></label>
-              <input type="text" name="amount" class="form-control" value="{{$booktourdetails->price}}" readonly />
-          </div>
-      </div>
+    @foreach ($payment->booktour->booktourdetails as $booktourdetail)
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <label for="name"><b>{{trans('language.tour_name')}}</b></label>
+            <input type="text" name="name" class="form-control" value="{{$booktourdetail->tour_name}}" readonly />
+        </div>
+        <div class="col-md-6">
+            <label for="name"><b>{{trans('language.place_to')}}</b></label>
+            <input type="text" name="amount" class="form-control" value="{{$booktourdetail->tour->place_to}}" readonly />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <label for="name"><b>{{trans('language.quantity_people')}}</b></label>
+            <input type="text" name="duration" class="form-control" value="{{$booktourdetail->quantity_people}}" readonly />
+        </div>
+        <div class="col-md-6">
+            <label for="name"><b>{{trans('language.price')}}</b></label>
+            <input type="text" id="price" name="amount" class="form-control" value="{{$booktourdetail->price}}" readonly />
+        </div>
+    </div>
+    <hr/>
+    @endforeach
       <div class="row mt-2">
           <div class="col-md-6">
               <label for="name"><b>{{trans('language.customer')}}</b></label>
@@ -29,24 +42,14 @@
           </div>
       </div>
       <div class="row mt-2">
-          <div class="col-md-6">
-              <label for="name"><b>{{trans('language.payment_method')}}</b></label>
-              <input type="text" name="payment_method" class="form-control"
-                  value="
-                    {{$payment->payment_method == config('app.banking') ? 
-                    trans('language.banking') : trans('language.normal')}}
-                    " readonly />
-          </div>
-          <div class="col-md-6">
-              <label for="name"><b>{{trans('language.date_created')}}</b></label>
-              <input type="text" name="date" class="form-control" value="{{$payment->created_at}}" readonly />
-          </div>
-      </div>
-      <div class="row mt-2">
-          <div class="col-md-6">
-              <label for="name"><b>{{trans('language.quantity_people')}}</b></label>
-              <input type="text" name="duration" class="form-control" value="{{$booktourdetails->quantity_people}}" readonly />
-          </div>
+        <div class="col-md-6">
+            <label for="name"><b>{{trans('language.payment_method')}}</b></label>
+            <input type="text" name="payment_method" class="form-control"
+                value="
+                  {{$payment->payment_method == config('app.banking') ? 
+                  trans('language.banking') : trans('language.normal')}}
+                  " readonly />
+        </div>
           <div class="col-md-6">
               <label for="name"><b>{{trans('language.payment_status')}}</b></label>
               @if ($payment->payment_method == config('app.normal') && $payment->payment_status == config('app.unpaid'))
