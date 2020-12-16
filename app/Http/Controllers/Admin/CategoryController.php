@@ -6,10 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Repositories\Admin\Category\CategoryRepositoryInterface;
 use Session;
 
 class CategoryController extends Controller
 {
+    protected $categoryRepo;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepo) {
+        $this->categoryRepo = $categoryRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +24,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::with('parent')->get();
+        $categories = $this->categoryRepo->getAllCategory();
         return view('admin.pages.category.list', compact('categories'));
     }
 
@@ -30,7 +36,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categories = Category::get();
+        $categories = $this->categoryRepo->get();
         return view('admin.pages.category.create', compact('categories'));
     }
 
@@ -42,7 +48,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::create($request->all());
+        $data = $request->all();
+        $this->categoryRepo->create($data);
         return redirect()->route('admin.category.index');
     }
 
@@ -65,9 +72,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $cate = $this->checkCategoryExist($id);
+        $cate = $this->categoryRepo->checkCategoryExist($id);
         if($cate){
-            $categories = Category::where('categories_id','<>',$id)->get();
+            $categories = $this->categoryRepo->findExceptCategory($id);
             return view('admin.pages.category.edit_category', compact('cate','categories'));
         } else {
             return redirect()->route('admin.category.index');
@@ -83,11 +90,10 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $cate = $this->checkCategoryExist($id);
+        $cate = $this->categoryRepo->checkCategoryExist($id);
         if($cate){
-            $cate->name = $request->name;
-            $cate->parent_id = $request->parent_id;
-            $cate->save();
+            $data = $request->all();
+            $this->categoryRepo->update($id, $data);
         }
         return redirect()->route('admin.category.index');
     }
@@ -100,21 +106,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $cate = $this->checkCategoryExist($id);
+        $cate = $this->categoryRepo->checkCategoryExist($id);
         if($cate){
-            $cate->delete();
+            $this->categoryRepo->delete($id);
         }
         return redirect()->route('admin.category.index');
-    }
-    
-    public function checkCategoryExist($id)
-    {
-        $cate = Category::find($id);
-        if(!$cate){
-            Session::flash('Error', trans('language.error.error_find'));
-            return false;
-        } else {
-            return $cate;
-        }
     }
 }

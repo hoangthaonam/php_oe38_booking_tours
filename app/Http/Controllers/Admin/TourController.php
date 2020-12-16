@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use App\Models\Category;
 use App\Http\Requests\TourRequest;
-use App\Repositories\Tour\TourRepositoryInterface;
+use App\Repositories\Admin\Tour\TourRepositoryInterface;
 use Session;
 
 class TourController extends Controller
