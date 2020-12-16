@@ -50,6 +50,14 @@ Route::group(['namespace'=>'User'], function(){
     Route::group(['middleware' => 'auth'], function(){
         Route::resource('booktour','BookTourController');
         Route::get('booking/infor/{id}','BookTourController@displayBookingInformation')->name('booking.infor');
+
+        Route::post('payment/VNPAY', 'PaymentByVNPAYController@create')->name('vnpay.create');
+        Route::get('payment/return', 'PaymentByVNPAYController@return')->name('vnpay.return');
+        Route::post('payment/normal', 'PaymentController@createNormalPayment')->name('payment.normal');
+        Route::get('payment/banking', 'PaymentController@createBankingPayment')->name('payment.banking');
+        // Route::get('payment/show/{id}', 'PaymentController@show')->name('payment.show');
+        Route::resource('payment', 'PaymentController');
+
     });
 });
 

@@ -13,6 +13,10 @@ return [
     'password_test_success' => env('password_test_success'),
     'password_test_fail' => env('password_test_fail'),
     'username_test' => env('username_test'),
+    'vnp_HashSecret' => env('vnp_HashSecret'),
+    'vnp_TmnCode' => env('vnp_TmnCode'),
+    'vnp_Url' => env('vnp_Url'),
+    'mail_test' => env('mail_test'),
 
     /*
     |--------------------------------------------------------------------------
