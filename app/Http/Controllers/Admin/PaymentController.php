@@ -24,7 +24,6 @@ class PaymentController extends Controller
     public function index()
     {
         $payments = $this->paymentRepo->getAllPayment();
-
         return view('admin.pages.payment.index', compact('payments'));
     }
 
@@ -58,7 +57,6 @@ class PaymentController extends Controller
     public function show($id)
     {
         $payment  = $this->paymentRepo->getDataPayment($id);
-
         return view('admin.pages.payment.payment_details', compact('payment'));   
     }
 

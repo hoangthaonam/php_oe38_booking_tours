@@ -11,13 +11,7 @@
     <title>@yield('title')</title>
     <link href="{{ mix('css/admin.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ mix('fonts/font-awe.css')}}" rel="stylesheet">
- 
-   
     <base href="{{ asset('') }}">
-    
-    
-
-
 </head>
 
 <body id="page-top">
@@ -44,11 +38,13 @@
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
 
     @include('admin.layouts.footer')
     <script type="text/javascript" src="{{ mix('js/admin.js')}}"></script>
+    <script type="text/javascript" src="{{ mix('js/jquery-3.5.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{ mix('js/pusher.min.js')}}"></script>
+    <script type="text/javascript" src="{{ mix('js/notification.js')}}"></script>
 </body>
 
 </html>

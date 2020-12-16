@@ -21,10 +21,8 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
         $payment = Payment::with('booktour.user', 'booktour.booktourdetails.tour')->where('payment_id', $id)->first();
         if(!$payment){
             Session::flash('Error', trans('language.error.error_find'));
-
             return false;
         }
-
         return $payment;
     }
 
@@ -33,11 +31,10 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
         $payment = Payment::find($id);
         if(!$payment){
             Session::flash('Error', trans('language.error.error_find'));
-            
             return false;
         } else {
-
             return $payment;
         }
     }
 }
+?>
