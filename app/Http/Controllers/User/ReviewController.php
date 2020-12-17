@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CommentReview;
 use App\Http\Requests\ReviewRequest;
+use App\Repositories\User\Review\ReviewRepositoryInterface;
 use Auth;
 use Session;
 
 class ReviewController extends Controller
 {
-    public function __construct() {
+    protected $reviewRepo;
+
+    public function __construct(ReviewRepositoryInterface $reviewRepo) {
         $this->middleware('auth')->except(['show']);
+        $this->reviewRepo = $reviewRepo;
     }
     
     /**
@@ -46,7 +50,7 @@ class ReviewController extends Controller
         $reviews = $request->all();
         $reviews['user_id'] = Auth::user()->user_id;
         $reviews['type'] = config('app.review_type');
-        $newReview = CommentReview::create($reviews);
+        $newReview = $this->reviewRepo->create($reviews);
         return redirect()->route('review.show', $newReview->cmr_id);
     }
     
@@ -58,8 +62,8 @@ class ReviewController extends Controller
      */
     public function show($cmr_id)
     {
-        $review = CommentReview::with('tour','user')->find($cmr_id);
-        $review = $this->checkReviewExist($review);
+        $review = $this->reviewRepo->getReview($cmr_id);
+        $review = $this->reviewRepo->checkReviewExist($review);
         if($review){
             return view('client.layouts.review_detail', compact('review'));
         } else {
@@ -85,14 +89,13 @@ class ReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ReviewRequest $request, $id)
+    public function update(ReviewRequest $request, $cmr_id)
     {
-        $review = CommentReview::find($id);
-        $review = $this->checkReviewExist($review);
+        $review = $this->reviewRepo->find($cmr_id);
+        $review = $this->reviewRepo->checkReviewExist($review);
         if($review){
             if (Auth::user()->can('update', $review)) {
-                $review->fill($request->all())->save();
-                $review->save();
+                $this->reviewRepo->update($review->cmr_id, $request->all());
                 return redirect()->route('review.show',$review->cmr_id);
             } else {
                 Session::flash('Error',trans('language.error_edit_review'));
@@ -111,12 +114,12 @@ class ReviewController extends Controller
      */
     public function destroy($cmr_id)
     {
-        $review = CommentReview::find($cmr_id);
-        $review = $this->checkReviewExist($review);
+        $review = $this->reviewRepo->find($cmr_id);
+        $review = $this->reviewRepo->checkReviewExist($review);
         if($review){
-            $tour = CommentReview::find($cmr_id)->tour()->first();
+            $tour = $this->reviewRepo->getReviewTour($cmr_id);
             if (Auth::user()->can('delete', $review)) {
-                $review->delete();
+                $this->reviewRepo->delete($cmr_id);
                 return redirect()->route('user.tour.show', $tour->tour_id);
             } else {
                 Session::flash('Error',trans('language.error_delete_review'));
@@ -124,16 +127,6 @@ class ReviewController extends Controller
             }
         } else {
             return redirect()->route('user.tour.index');
-        }
-    }
-
-    public function checkReviewExist($review)
-    {
-        if(!$review){
-            Session::flash('Error', trans('language.error.error_find'));
-            return false;
-        } else {
-            return $review;
         }
     }
 }
