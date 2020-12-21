@@ -40,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\User\Comment\CommentRepository::class
         );
         $this->app->singleton(
+            \App\Repositories\User\Review\ReviewRepositoryInterface::class,
+            \App\Repositories\User\Review\ReviewRepository::class
+        );
+        $this->app->singleton(
             \App\Repositories\User\Payment\PaymentRepositoryInterface::class,
             \App\Repositories\User\Payment\PaymentRepository::class
         );
