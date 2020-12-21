@@ -6,26 +6,29 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CommentReview;
 use App\Component\CommentRecursive;
+use App\Repositories\User\Comment\CommentRepositoryInterface;
 use Auth;
 
 
 class CommentController extends Controller
 {
+    protected $commentRepo;
+
+    public function __construct(CommentRepositoryInterface $commentRepo) {
+        $this->commentRepo = $commentRepo;
+    }
+
     public function create(Request $request)
     {
         if(Auth::check()){
-            $comment = new CommentReview();
             $comment['type'] = config('app.comment_type');
             $comment['user_id'] = Auth::user()->user_id;
             $comment['tour_id'] = (int)$request->tour_id;
             $comment['content'] = $request->content;
             $comment['parent_id'] = (int)$request->cmr_id;
             $comment['status'] = 0;
-            $comment->save();
-            $listComments = CommentReview::with('user')
-                            ->where('type', config('app.comment_type'))
-                            ->where('tour_id', $request->tour_id)
-                            ->get();
+            $this->commentRepo->create($comment);
+            $listComments = $this->commentRepo->getTourComment($request->tour_id);
             $commentRecursive = new CommentRecursive();
             $response = $commentRecursive->recursive($listComments);
 
@@ -39,13 +42,9 @@ class CommentController extends Controller
     public function update(Request $request)
     {
         if(Auth::check()){
-            $comment = CommentReview::find($request->cmr_id);
             $comment['content'] = $request->content;
-            $comment->save();
-            $listComments = CommentReview::with('user')
-                            ->where('type', config('app.comment_type'))
-                            ->where('tour_id', $request->tour_id)
-                            ->get();
+            $this->commentRepo->update($request->cmr_id, $comment);
+            $listComments = $this->commentRepo->getTourComment($request->tour_id);
             $commentRecursive = new CommentRecursive();
             $response = $commentRecursive->recursive($listComments);
             return $response;
@@ -56,17 +55,12 @@ class CommentController extends Controller
     }
     public function destroy(Request $request)
     {
-        
         $cmr_id = (int)($request->cmr_id);
-        $comment = CommentReview::find($cmr_id)->delete();
+        $this->commentRepo->delete($cmr_id);
         $commentRecursive = new CommentRecursive();
-        $listComments = CommentReview::with('user')
-                            ->where('type', config('app.comment_type'))
-                            ->where('tour_id', $request->tour_id)
-                            ->get();
+        $listComments = $this->commentRepo->getTourComment($request->tour_id);
         $commentRecursive = new CommentRecursive();
         $response = $commentRecursive->recursive($listComments);
-
         return $response;
     }
 }
