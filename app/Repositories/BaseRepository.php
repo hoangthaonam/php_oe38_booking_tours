@@ -29,8 +29,7 @@ abstract class BaseRepository implements RepositoryInterface{
     }
 
     public function create($data = []){
-        $this->model::create($data);
-        return true;
+        return $this->model::create($data); 
     }
 
     public function update($id, $data = []){
@@ -51,4 +50,3 @@ abstract class BaseRepository implements RepositoryInterface{
         return false;
     }
 }
-?>

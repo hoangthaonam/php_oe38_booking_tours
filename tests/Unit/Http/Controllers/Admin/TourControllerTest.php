@@ -9,7 +9,7 @@ use App\Models\Tour;
 use Mockery as m;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Admin\TourController;
-use App\Repositories\Tour\TourRepositoryInterface;
+use App\Repositories\Admin\Tour\TourRepositoryInterface;
 use App\Http\Requests\TourRequest;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Illuminate\Support\Facades\Storage;

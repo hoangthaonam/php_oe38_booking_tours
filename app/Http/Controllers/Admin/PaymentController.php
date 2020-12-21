@@ -6,10 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\BookTour;
+use App\Repositories\Admin\Payment\PaymentRepositoryInterface;
 use Session;
 
 class PaymentController extends Controller
 {
+    protected $paymentRepo;
+
+    public function __construct(PaymentRepositoryInterface $paymentRepo) {
+        $this->paymentRepo = $paymentRepo;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +23,8 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::with('booktour.user', 'booktour.booktourdetails.tour')->get();
+        $payments = $this->paymentRepo->getAllPayment();
+
         return view('admin.pages.payment.index', compact('payments'));
     }
 
@@ -50,8 +57,9 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $payments = Payment::with('booktour.user', 'booktour.booktourdetails.tour')->where('payment_id', $id)->get();
-        return view('admin.pages.payment.payment_details', compact('payments'));   
+        $payment  = $this->paymentRepo->getDataPayment($id);
+
+        return view('admin.pages.payment.payment_details', compact('payment'));   
     }
 
     /**
@@ -74,12 +82,13 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $payment = $this->checkPaymentExists($id);
+        $payment = $this->paymentRepo->checkPaymentExists($id);
         if($payment){
-            $payment['payment_status'] = $request->payment_status;
-            $payment->save();
+            $data['payment_status'] = $request->payment_status;
+            $this->paymentRepo->update($id, $data);
             Session::flash('Success', trans('language.update_success'));
         }
+
         return redirect()->route('admin.payment.show',$id);
     }
 
@@ -92,16 +101,5 @@ class PaymentController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function checkPaymentExists($id)
-    {
-        $payment = Payment::find($id);
-        if(!$payment){
-            Session::flash('Error', trans('language.error.error_find'));
-            return false;
-        } else {
-            return $payment;
-        }
     }
 }
