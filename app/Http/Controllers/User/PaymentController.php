@@ -9,6 +9,8 @@ use App\Models\Payment;
 use App\Models\BookTour;
 use App\Models\BookTourDetails;
 use App\Repositories\User\Payment\PaymentRepositoryInterface;
+use App\Mail\BookTourEmail;
+use App\Jobs\SendEmailProcess;
 use Session;
 use Mail;
 
@@ -93,12 +95,7 @@ class PaymentController extends Controller
         $payment = $this->paymentRepo->getDataPayment($id);
         if($payment){
             $name = $payment->booktour->user->name;
-            Mail::send('client.layouts.bill', [
-                'payment' => $payment,
-            ], function($mail) use ($name){
-                $mail->to(config('app.mail_test'), $name);
-                $mail->subject(trans('language.email_subject')); 
-            });
+            SendEmailProcess::dispatch($payment, $name);
         }
     }
 
