@@ -27,6 +27,31 @@
                         <a class="nav-link" href="{{ route('user.edit',Auth::user()->user_id)  }}" class="btn btn-default btn-rounded"  >{{Auth::user()->username}}</a>
                        
                     </li>
+                    <li class="nav-item dropdown dropdown-notifications">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{trans('language.notifications')}}<span class="caret"></span>
+                        </a>
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}" />
+                        <div class="dropdown-menu dropdown-menu-right menu-notification-user" aria-labelledby="navbarDropdown">
+                            @foreach (Auth::user()->notifications as $notification)
+                            <div id="noti{{$notification->id}}" class="p-1">
+                                <a class="nav-link @if (!$notification->read_at)
+                                    bg-info text-white
+                                @endif" href="{{route('payment.show',$notification->data['payment_id'])}}">
+                                    <span>{{ $notification->data['title'] }}</span><br>
+                                    <small>{{ $notification->data['content'] }}</small>
+                                </a>
+                                @if (!$notification->read_at)
+                                    <a class="float-right" data-id={{$notification->id}} data-user = "1" onClick="markAsRead(this)">
+                                        {{trans('language.markAsRead')}}
+                                    </a>
+                                    <br>
+                                @endif
+                                <hr>
+                            </div>
+                            @endforeach
+                        </div>
+                    </li>
                     <li class="nav-item">
 
                         <a class="nav-link" href="{{route('logout')}}" class="btn btn-default btn-rounded">@lang('language.logout')</a>

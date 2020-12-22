@@ -36,5 +36,9 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
             return $payment;
         }
     }
+
+    public function getOwnerPayment($payment){
+        return $payment->booktour->user;
+    }
 }
 ?>

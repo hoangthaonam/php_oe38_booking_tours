@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\BookTour;
 use App\Repositories\Admin\Payment\PaymentRepositoryInterface;
+use App\Http\Controllers\NotificationController;
 use Session;
 
 class PaymentController extends Controller
@@ -84,6 +85,8 @@ class PaymentController extends Controller
         if($payment){
             $data['payment_status'] = $request->payment_status;
             $this->paymentRepo->update($id, $data);
+            $paymentOwner = $this->paymentRepo->getOwnerPayment($payment);
+            NotificationController::notifyStatusTourBooked($payment->payment_id, $paymentOwner);
             Session::flash('Success', trans('language.update_success'));
         }
 

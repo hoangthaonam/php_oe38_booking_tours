@@ -116,4 +116,6 @@ return [
     'date_created' => 'Ngày tạo',
     'update_success' => 'Cập nhật thành công!',
     'email_subject' => 'Email Đặt Tour',
+    'notifications' => 'Thông báo',
+    'markAsRead' => 'Đánh dấu đã đọc',
 ];
