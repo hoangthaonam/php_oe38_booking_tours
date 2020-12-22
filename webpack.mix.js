@@ -58,6 +58,8 @@ mix.styles([
         'public/assets/client/js/jquery-3.5.1.slim.min.js',
     ], 'public/js/client.js')
     .scripts('resources/assets/js/myJS.js', 'public/js/myJS.js')
+    .scripts('resources/assets/js/notification.js', 'public/js/notification.js')
+    .scripts('resources/assets/js/pusher.min.js', 'public/js/pusher.min.js')
     .scripts('resources/assets/js/jquery-3.5.1.min.js', 'public/js/jquery-3.5.1.min.js')
     .version();
 

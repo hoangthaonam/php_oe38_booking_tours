@@ -7,3 +7,4 @@ interface PaymentRepositoryInterface {
     public function getDataPayment($id);
     public function checkPaymentExists($id);
 }
+?>

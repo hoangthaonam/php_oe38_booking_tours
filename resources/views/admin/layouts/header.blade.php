@@ -44,10 +44,33 @@
         <!-- Nav Item - Alerts -->
 
         <div class="topbar-divider d-none d-sm-block"></div>
+        <li class="nav-item dropdown dropdown-notifications">
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                {{trans('language.notifications')}}<span class="caret"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right menu-notification" aria-labelledby="navbarDropdown">
+                @foreach (Auth::user()->notifications as $notification)
+                <div id="noti{{$notification->id}}">
+                    <a class="dropdown-item @if (!$notification->read_at)
+                        bg-info text-white
+                    @endif" href="{{route('admin.payment.show',$notification->data['payment_id'])}}">
+                        <span>{{ $notification->data['title'] }}</span><br>
+                        <small>{{ $notification->data['content'] }}</small>
+                    </a>
+                    @if (!$notification->read_at)
+                        <a class="float-right" data-id={{$notification->id}} onClick="markAsRead(this)">
+                            {{trans('language.markAsRead')}}
+                        </a>
+                    @endif
+                    <hr>
+                </div>
+                @endforeach
+            </div>
+        </li>
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Auth::user()->name}}</span>
                 <img class="img-profile rounded-circle" src="assets/admin/img/undraw_profile.svg">
             </a>
             <!-- Dropdown - User Information -->
@@ -57,7 +80,6 @@
                 </a>
             </div>
         </li>
-
     </ul>
-
+    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}" />
 </nav>

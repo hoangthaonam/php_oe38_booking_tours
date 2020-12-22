@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationController;
 use App\Models\Payment;
 use App\Models\BookTour;
 use App\Models\BookTourDetails;
@@ -71,8 +72,8 @@ class PaymentController extends Controller
         $payment = $request->only('payment_method', 'booktour_id');
         $payment['payment_status'] = config('app.unpaid');
         $payment = $this->paymentRepo->create($payment);
+        NotificationController::notifyNewTourBooked($payment->payment_id);
         $this->sendEmail($payment->payment_id);
-
         return redirect()->route('payment.show',$payment->payment_id);
     }
     
@@ -81,6 +82,7 @@ class PaymentController extends Controller
         $payment = Session::get('payment');
         Session::forget('payment');
         $payment = $this->paymentRepo->create($payment);
+        NotificationController::notifyNewTourBooked($payment->payment_id);
         $this->sendEmail($payment->payment_id);
 
         return redirect()->route('payment.show',$payment->payment_id);
