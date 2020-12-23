@@ -115,4 +115,6 @@ return [
     'date_created' => 'Date Created',
     'update_success' => 'Update Success!',
     'email_subject' => 'Booking Tour Email',
+    'notifications' => 'Notification',
+    'markAsRead' => 'Mark as Read',
 ];

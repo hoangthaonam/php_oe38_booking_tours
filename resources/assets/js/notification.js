@@ -11,25 +11,39 @@ channel.bind('send-message', function(data) {
             <span>${data.title}</span><br>
             <small>${data.content}</small>
         </a>
-        <a class="float-right" data-id=${data.id} onClick="markAsRead(this)">
+        <a class="float-right" data-id=${data.id} data-user="0" onClick="markAsRead(this)">
             Mark as read
         </a>
         <hr>
     </div>
     `;
-
+    var newNotificationHtmlUser = `
+    <div id="noti${data.id}" class="p-1">
+        <a class="nav-link bg-info text-white" href="http://127.0.0.1:8000/payment/${data.payment_id}">
+            <span>${data.title}</span><br>
+            <small>${data.content}</small>
+        </a>
+        <a class="float-right" data-id=${data.id} data-user="1" onClick="markAsRead(this)">
+            Mark as read
+        </a>
+        <br>
+        <hr>
+    </div>
+    `;
     $('.menu-notification').prepend(newNotificationHtml);
+    $('.menu-notification-user').prepend(newNotificationHtmlUser);
 });
 
 function markAsRead(element){
     let id = $(element).data('id');
+    let user = $(element).data('user');
     let _token = $('#token').val();
     let values = {
         'id': id,
         '_token': _token,
     };
     $.ajax({
-        url: 'http://127.0.0.1:8000/notification/markAsRead/'+id,
+        url: 'http://127.0.0.1:8000/notification/markAsRead/'+ id + '/' + user,
         type: "GET",
         data: values,
         success: function(response){

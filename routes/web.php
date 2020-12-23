@@ -67,4 +67,4 @@ Route::group(['middleware' => 'locale'], function() {
         ->name('user.change-language');
 });
 
-Route::get('notification/markAsRead/{id}', 'NotificationController@markAsRead');
+Route::get('notification/markAsRead/{id}/{type}', 'NotificationController@markAsRead');

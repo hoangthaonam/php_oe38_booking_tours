@@ -19,6 +19,26 @@ class NotificationController extends Controller
             'payment_id' => $payment_id,
         ];
         $user->notify(new BookingNotification($data));
+        $data["id"] = $user->notifications->first()->id;
+        $pusher = self::configPusher();
+        $pusher->trigger('NotificationEvent', 'send-message', $data);
+    }
+    
+    public static function notifyStatusTourBooked($payment_id, $user)
+    {
+        $data = [
+            'title' => 'Tour Status Notification',
+            'content' => 'Tour update by admin',
+            'payment_id' => $payment_id,
+        ];
+        $user->notify(new BookingNotification($data));
+        $data["id"] = $user->notifications->first()->id;
+        $pusher = self::configPusher();
+        $pusher->trigger('NotificationEvent', 'send-message', $data);
+    }
+
+    public static function configPusher()
+    {
         $options = array(
             'cluster' => 'ap1',
             'encrypted' => true
@@ -29,22 +49,33 @@ class NotificationController extends Controller
             env('PUSHER_ID'),
             $options
         );
-        $data["id"] = $user->notifications->first()->id;
-        $pusher->trigger('NotificationEvent', 'send-message', $data);
+
+        return $pusher;
     }
-    
-    public function markAsRead($id)
+
+    public function markAsRead($id, $type)
     {
         $user = User::find(Auth::user()->user_id);
         $notification = $user->notifications->where('id', $id)->first();
         $notification->markAsRead();
-        $html = "
-        <a class=\"dropdown-item\" id=\"#noti{$notification->id}\" 
-            href=\"http://127.0.0.1:8000/admin/payment/{$notification->data['payment_id']}\" >
-            <span>{$notification->data['title']}</span><br>
-            <small>{$notification->data['content']}</small>
-        </a>
-        <hr>";
+        $html="";
+        if($type){
+            $html .= "
+            <a class=\"nav-link\" id=\"#noti{$notification->id}\" 
+                href=\"http://127.0.0.1:8000/payment/{$notification->data['payment_id']}\" >
+                <span>{$notification->data['title']}</span><br>
+                <small>{$notification->data['content']}</small>
+            </a>
+            <hr>";
+        } else {
+            $html .= "
+            <a class=\"dropdown-item\" id=\"#noti{$notification->id}\" 
+                href=\"http://127.0.0.1:8000/admin/payment/{$notification->data['payment_id']}\" >
+                <span>{$notification->data['title']}</span><br>
+                <small>{$notification->data['content']}</small>
+            </a>
+            <hr>";
+        }
         return $html;
     }
 }

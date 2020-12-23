@@ -58,7 +58,7 @@
                         <small>{{ $notification->data['content'] }}</small>
                     </a>
                     @if (!$notification->read_at)
-                        <a class="float-right" data-id={{$notification->id}} onClick="markAsRead(this)">
+                        <a class="float-right" data-id={{$notification->id}} data-user = "0" onClick="markAsRead(this)">
                             {{trans('language.markAsRead')}}
                         </a>
                     @endif
