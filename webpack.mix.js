@@ -61,10 +61,18 @@ mix.styles([
     .scripts('resources/assets/js/notification.js', 'public/js/notification.js')
     .scripts('resources/assets/js/pusher.min.js', 'public/js/pusher.min.js')
     .scripts('resources/assets/js/jquery-3.5.1.min.js', 'public/js/jquery-3.5.1.min.js')
+    .scripts('resources/assets/js/accessibility.js', 'public/js/accessibility.js')
+    .scripts('resources/assets/js/export-data.js', 'public/js/export-data.js')
+    .scripts('resources/assets/js/exporting.js', 'public/js/exporting.js')
+    .scripts('resources/assets/js/highcharts.js', 'public/js/highcharts.js')
+    .scripts('resources/assets/js/chart-by-month.js', 'public/js/chart-by-month.js')
+    .scripts('resources/assets/js/chart-by-year.js', 'public/js/chart-by-year.js')
     .version();
 
 
 mix.styles([
     'public/assets/admin/vendor/fontawesome-free/css/all.min.css',
 ], 'public/fonts/font-awe.css')
+
+mix.styles('resources/assets/styles/chart.css', 'public/css/chart.css')
 mix.copy('node_modules/font-awesome/fonts/*', 'public/fonts');
