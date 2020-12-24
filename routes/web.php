@@ -24,6 +24,7 @@ Route::group([
         Route::resource('tour', 'TourController');
         Route::resource('/category','CategoryController');
         Route::resource('/payment','PaymentController');
+        Route::get('/chart', 'ChartController@index')->name('chart');
     });
     
 });
@@ -55,7 +56,6 @@ Route::group(['namespace'=>'User'], function(){
         Route::get('payment/return', 'PaymentByVNPAYController@return')->name('vnpay.return');
         Route::post('payment/normal', 'PaymentController@createNormalPayment')->name('payment.normal');
         Route::get('payment/banking', 'PaymentController@createBankingPayment')->name('payment.banking');
-        // Route::get('payment/show/{id}', 'PaymentController@show')->name('payment.show');
         Route::resource('payment', 'PaymentController');
 
     });

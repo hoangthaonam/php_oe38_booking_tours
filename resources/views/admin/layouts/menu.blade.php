@@ -75,7 +75,7 @@
             </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="{{route('admin.chart')}}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>@lang('language.chart')</span>
         </a>

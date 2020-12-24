@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Admin\Category\CategoryRepository::class
         );
         $this->app->singleton(
+            \App\Repositories\Admin\Chart\ChartRepositoryInterface::class,
+            \App\Repositories\Admin\Chart\ChartRepository::class
+        );
+        $this->app->singleton(
             \App\Repositories\User\BookTour\BookTourRepositoryInterface::class,
             \App\Repositories\User\BookTour\BookTourRepository::class
         );
