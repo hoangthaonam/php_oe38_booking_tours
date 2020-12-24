@@ -75,4 +75,5 @@ mix.styles([
 ], 'public/fonts/font-awe.css')
 
 mix.styles('resources/assets/styles/chart.css', 'public/css/chart.css')
+mix.styles('resources/assets/styles/notification.css', 'public/css/notification.css')
 mix.copy('node_modules/font-awesome/fonts/*', 'public/fonts');
