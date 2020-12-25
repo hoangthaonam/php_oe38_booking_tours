@@ -6,6 +6,7 @@ use App\Repositories\User\BookTour\BookTourRepositoryInterface;
 use App\Models\BookTour;
 use App\Models\BookTourDetails;
 use Auth;
+use Session;
 
 class BookTourRepository extends BaseRepository implements BookTourRepositoryInterface{
 
@@ -25,6 +26,16 @@ class BookTourRepository extends BaseRepository implements BookTourRepositoryInt
         $newBooktour = BookTour::create($booktour);
         $data['booktour_id'] = $newBooktour->booktour_id;
         return $booktourdetails =  BookTourDetails::create($data);
+    }
+
+    public function getBookingDetails($id){
+        $booktourdetails = BookTourDetails::find($id);
+        if($booktourdetails){
+            return $booktourdetails;
+        } else {
+            Session::flash('Error', trans('error.error_find'));
+            return false;
+        }
     }
 }
 ?>

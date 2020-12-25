@@ -11,6 +11,7 @@
     <title>@yield('title')</title>
     <link href="{{ mix('css/admin.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ mix('css/chart.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ mix('css/notification.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ mix('fonts/font-awe.css')}}" rel="stylesheet">
     <base href="{{ asset('') }}">
 </head>

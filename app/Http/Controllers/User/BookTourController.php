@@ -53,7 +53,7 @@ class BookTourController extends Controller
     
     public function displayBookingInformation($id)
     {
-        $booktourdetails = $this->booktourRepo->find($id);
+        $booktourdetails = $this->booktourRepo->getBookingDetails($id);
         return view('client.layouts.booktour_detail', compact('booktourdetails'));
     }
     /**
