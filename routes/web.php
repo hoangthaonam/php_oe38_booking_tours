@@ -68,3 +68,4 @@ Route::group(['middleware' => 'locale'], function() {
 });
 
 Route::get('notification/markAsRead/{id}/{type}', 'NotificationController@markAsRead');
+Route::get('notification/markAllAsRead/{type}', 'NotificationController@markAllAsRead');

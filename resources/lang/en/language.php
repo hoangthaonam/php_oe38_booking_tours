@@ -117,6 +117,7 @@ return [
     'email_subject' => 'Booking Tour Email',
     'notifications' => 'Notification',
     'markAsRead' => 'Mark as Read',
+    'markAllAsRead' => 'Mark All as Read',
     'chart_by_month' => 'Chart by month',
     'chart_month_des' => 'The chart shows the total number of booking by last 12 months that customer book',
     'chart_by_year' => 'Chart by year',

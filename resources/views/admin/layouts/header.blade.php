@@ -44,27 +44,40 @@
         <!-- Nav Item - Alerts -->
 
         <div class="topbar-divider d-none d-sm-block"></div>
-        <li class="nav-item dropdown dropdown-notifications">
+        <li class="nav-item dropdown dropdown-notifications no-arrow ">
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                {{trans('language.notifications')}}<span class="caret"></span>
+                <i class="icon fas fa-bell"></i>
+                    @php
+                        $unReadNotification = DB::table('notifications')->where('read_at', NULL)->get();
+                        $numberOfUnReadNotification = count($unReadNotification);
+                    @endphp
+                    <span class="caret txt"><span id="numberOfUnReadNotification" class="@if ($numberOfUnReadNotification<=0) hidden 
+                    @endif">{{$numberOfUnReadNotification}}</span></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right menu-notification" aria-labelledby="navbarDropdown">
-                @foreach (Auth::user()->notifications as $notification)
-                <div id="noti{{$notification->id}}">
-                    <a class="dropdown-item @if (!$notification->read_at)
-                        bg-info text-white
-                    @endif" href="{{route('admin.payment.show',$notification->data['payment_id'])}}">
-                        <span>{{ $notification->data['title'] }}</span><br>
-                        <small>{{ $notification->data['content'] }}</small>
+                <div class = "dropdown-item">
+                    <a class="float-right" data-user = "0" onClick="markAllAsRead(this)">
+                        {{trans('language.markAllAsRead')}}
                     </a>
-                    @if (!$notification->read_at)
-                        <a class="float-right" data-id={{$notification->id}} data-user = "0" onClick="markAsRead(this)">
-                            {{trans('language.markAsRead')}}
-                        </a>
-                    @endif
-                    <hr>
                 </div>
-                @endforeach
+                <div id="list_notifications">
+                @foreach (Auth::user()->notifications as $notification)
+                    <div id="noti{{$notification->id}}">
+                        <a class="dropdown-item @if (!$notification->read_at)
+                            bg-info text-white
+                        @endif" href="{{route('admin.payment.show',$notification->data['payment_id'])}}">
+                            <span>{{ $notification->data['title'] }}</span><br>
+                            <small>{{ $notification->data['content'] }}</small>
+                        </a>
+                        @if (!$notification->read_at)
+                            <a class="float-right" data-id={{$notification->id}} data-user = "0" onClick="markAsRead(this)">
+                                {{trans('language.markAsRead')}}
+                            </a>
+                        @endif
+                        <hr>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </li>
         <!-- Nav Item - User Information -->

@@ -30,7 +30,9 @@ channel.bind('send-message', function(data) {
         <hr>
     </div>
     `;
-    $('.menu-notification').prepend(newNotificationHtml);
+    $('#numberOfUnReadNotification').removeClass("hidden");
+    $('#numberOfUnReadNotification').html(data.numberOfUnReadNotification);
+    $('#list_notifications').prepend(newNotificationHtml);
     $('.menu-notification-user').prepend(newNotificationHtmlUser);
 });
 
@@ -38,6 +40,7 @@ function markAsRead(element){
     let id = $(element).data('id');
     let user = $(element).data('user');
     let _token = $('#token').val();
+    let numberOfUnReadNotification = $('#numberOfUnReadNotification').html() - 1;
     let values = {
         'id': id,
         '_token': _token,
@@ -48,6 +51,27 @@ function markAsRead(element){
         data: values,
         success: function(response){
             document.getElementById('noti'+id).innerHTML = response;
+            document.getElementById('numberOfUnReadNotification').innerHTML = numberOfUnReadNotification;
+            if(numberOfUnReadNotification == 0){
+                document.getElementById('numberOfUnReadNotification').classList.add("hidden");
+            }
+        }
+    });
+}
+
+function markAllAsRead(element){
+    let user = $(element).data('user');
+    let _token = $('#token').val();
+    let values = {
+        '_token': _token,
+    };
+    $.ajax({
+        url: 'http://127.0.0.1:8000/notification/markAllAsRead/'+ user,
+        type: "GET",
+        data: values,
+        success: function(response){
+            document.getElementById('list_notifications').innerHTML = response;
+            document.getElementById('numberOfUnReadNotification').classList.add("hidden");
         }
     });
 }

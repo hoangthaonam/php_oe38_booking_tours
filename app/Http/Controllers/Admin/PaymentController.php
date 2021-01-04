@@ -9,6 +9,8 @@ use App\Models\BookTour;
 use App\Repositories\Admin\Payment\PaymentRepositoryInterface;
 use App\Http\Controllers\NotificationController;
 use Session;
+use DB;
+use Auth;
 
 class PaymentController extends Controller
 {
@@ -56,7 +58,17 @@ class PaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
+        $noti = '';
+        $notifications = Auth::user()->notifications;
+        foreach($notifications as $notification){
+            if($notification->data['payment_id']==$id){
+                $noti = $notification;
+            };
+        }
+        if($noti !='' && $noti['read_at'] == null){
+            $noti->markAsRead();
+        }
         $payment  = $this->paymentRepo->getDataPayment($id);
         return view('admin.pages.payment.payment_details', compact('payment'));   
     }
