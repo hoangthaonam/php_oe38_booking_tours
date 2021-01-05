@@ -19,10 +19,11 @@ class NotificationController extends Controller
             'title' => 'New Tour Booked',
             'content' => 'Tour booked by '.Auth::user()->name,
             'payment_id' => $payment_id,
+            'type' => 'admin',
         ];
         $user->notify(new BookingNotification($data));
         $data["id"] = $user->notifications->first()->id;
-        $data["numberOfUnReadNotification"] =  self::getNumberOfUnReadNotification();
+        $data["numberOfUnReadNotification"] =  self::getNumberOfUnReadNotification($user->user_id);
         $pusher = self::configPusher();
         $pusher->trigger('NotificationEvent', 'send-message', $data);
     }
@@ -33,10 +34,12 @@ class NotificationController extends Controller
             'title' => 'Tour Status Notification',
             'content' => 'Tour update by admin',
             'payment_id' => $payment_id,
+            'type' => 'user',
         ];
         $user->notify(new BookingNotification($data));
         $data["id"] = $user->notifications->first()->id;
-        $pusher = self::configPusher();
+        $pusher = self::configPusher($user->user_id);
+        $data["numberOfUnReadNotification"] =  self::getNumberOfUnReadNotification($user->user_id);
         $pusher->trigger('NotificationEvent', 'send-message', $data);
     }
 
@@ -113,9 +116,9 @@ class NotificationController extends Controller
         return $html;
     }
 
-    public static function getNumberOfUnReadNotification()
+    public static function getNumberOfUnReadNotification($user_id)
     {
-        $unReadNotification = DB::table('notifications')->where('read_at', NULL)->get();
+        $unReadNotification = DB::table('notifications')->where('notifiable_id', $user_id)->where('read_at', NULL)->get();
         $numberOfUnReadNotification = count($unReadNotification);
         return $numberOfUnReadNotification;
     }

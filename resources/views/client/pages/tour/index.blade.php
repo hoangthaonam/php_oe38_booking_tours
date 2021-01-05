@@ -1,7 +1,6 @@
-<link href="{{ mix('css/client.css' )}}" rel="stylesheet">
-<link href="{{ mix('fonts/font-awe.css' )}}" rel="stylesheet">
-<base href="{{ asset('') }}">
-@include('client.layouts.header')
+@extends('client.layouts.master')
+
+@section('content')
 <section class="w3l-grids-3 py-5">
     <div class="container py-md-5">
         <div class="title-content text-left mb-lg-5 mb-4">
@@ -50,7 +49,6 @@
         </div>
     </div>
 </section>
-
-<script type="text/javascript" src="{{ mix('js/client.js') }}"></script>
+@endsection
 
 
