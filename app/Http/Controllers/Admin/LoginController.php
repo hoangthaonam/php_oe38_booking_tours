@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Auth;
 use Session;
+use DB;
 
 class LoginController extends Controller
 {
@@ -20,6 +21,9 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $unReadNotification = DB::table('notifications')->where('read_at', NULL)->get();
+        $numberOfUnReadNotification = count($unReadNotification);
+        Session::put('numberOfUnReadNotification', $numberOfUnReadNotification);
         $username = $request->username;
         $password = $request->password;
         if (Auth::attempt(['username' => $username, 'password' => $password])) {

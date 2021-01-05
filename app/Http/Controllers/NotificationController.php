@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Notifications\BookingNotification;
 use Pusher\Pusher;
 use Auth;
+use DB;
+use Session;
 
 class NotificationController extends Controller
 {
@@ -20,6 +22,7 @@ class NotificationController extends Controller
         ];
         $user->notify(new BookingNotification($data));
         $data["id"] = $user->notifications->first()->id;
+        $data["numberOfUnReadNotification"] =  self::getNumberOfUnReadNotification();
         $pusher = self::configPusher();
         $pusher->trigger('NotificationEvent', 'send-message', $data);
     }
@@ -77,5 +80,43 @@ class NotificationController extends Controller
             <hr>";
         }
         return $html;
+    }
+
+    public function markAllAsRead($type)
+    {
+        $user = User::find(Auth::user()->user_id);
+        $user->unreadNotifications->markAsRead();
+        $html="";
+        if($type){
+            foreach($user->notifications as $notification){
+                $html .= "
+                <a class=\"nav-link\" id=\"#noti{$notification->id}\" 
+                    href=\"http://127.0.0.1:8000/payment/{$notification->data['payment_id']}\" >
+                    <span>{$notification->data['title']}</span><br>
+                    <small>{$notification->data['content']}</small>
+                </a>
+                <hr>";
+            }
+        } else {
+            foreach($user->notifications as $notification){
+                $html .= "
+                <div id=\"noti{{$notification->id}}\">
+                    <a class=\"dropdown-item\" id=\"#noti{$notification->id}\" 
+                        href=\"http://127.0.0.1:8000/admin/payment/{$notification->data['payment_id']}\" >
+                        <span>{$notification->data['title']}</span><br>
+                        <small>{$notification->data['content']}</small>
+                    </a>
+                    <hr>
+                </div>";
+            }
+        }
+        return $html;
+    }
+
+    public static function getNumberOfUnReadNotification()
+    {
+        $unReadNotification = DB::table('notifications')->where('read_at', NULL)->get();
+        $numberOfUnReadNotification = count($unReadNotification);
+        return $numberOfUnReadNotification;
     }
 }

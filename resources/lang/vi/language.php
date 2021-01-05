@@ -118,6 +118,7 @@ return [
     'email_subject' => 'Email Đặt Tour',
     'notifications' => 'Thông báo',
     'markAsRead' => 'Đánh dấu đã đọc',
+    'markAllAsRead' => 'Đánh dấu tất cả là đã đọc',
     'chart_by_month' => 'Biểu đồ  tháng',
     'chart_month_des' => 'Biểu đồ thể hiện số lượt booking của khách hàng trong vòng 12 tháng gần nhất có lượt book',
     'chart_by_year' => 'Biểu đồ  năm',

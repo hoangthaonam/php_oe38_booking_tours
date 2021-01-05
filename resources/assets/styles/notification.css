@@ -2,3 +2,24 @@
     max-height:250px;
     overflow:auto;
 }
+.icon {
+    position: relative;
+}
+.txt{
+    background-color: red;
+    position: absolute;
+    border-radius: 2em;
+    font-size: smaller;
+    color: white;
+    font-weight: oblique;
+    padding: 0.05em;
+    margin-bottom: 1.5em;
+    margin-left: 0.5em;
+    font-weight: bold;
+}
+.hidden{
+    visibility: hidden;
+}
+.show{
+    visibility: visible;
+}
