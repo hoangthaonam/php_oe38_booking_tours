@@ -48,11 +48,11 @@
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 <i class="icon fas fa-bell"></i>
                     @php
-                        $unReadNotification = DB::table('notifications')->where('read_at', NULL)->get();
+                        $unReadNotification = DB::table('notifications')->where('notifiable_id', Auth::user()->user_id)->where('read_at', NULL)->get();
                         $numberOfUnReadNotification = count($unReadNotification);
                     @endphp
-                    <span class="caret txt"><span id="numberOfUnReadNotification" class="@if ($numberOfUnReadNotification<=0) hidden 
-                    @endif">{{$numberOfUnReadNotification}}</span></span>
+                    <span id="noticenumberOfUnReadNotification" class="caret txt @if ($numberOfUnReadNotification<=0) hidden 
+                    @endif"><span id="numberOfUnReadNotification">{{$numberOfUnReadNotification}}</span></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right menu-notification" aria-labelledby="navbarDropdown">
                 <div class = "dropdown-item">

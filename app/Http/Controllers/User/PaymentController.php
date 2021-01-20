@@ -13,6 +13,7 @@ use App\Mail\BookTourEmail;
 use App\Jobs\SendEmailProcess;
 use Session;
 use Mail;
+use Auth;
 
 class PaymentController extends Controller
 {
@@ -60,9 +61,18 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
+        $noti = '';
+        $notifications = Auth::user()->notifications;
+        foreach($notifications as $notification){
+            if($notification->data['payment_id']==$id){
+                $noti = $notification;
+            };
+        }
+        if($noti !='' && $noti['read_at'] == null){
+            $noti->markAsRead();
+        }
         $payment = $this->paymentRepo->getDataPayment($id);
         if($payment){
-
             return view('client.layouts.payment_details', compact('payment'));
         }
 
