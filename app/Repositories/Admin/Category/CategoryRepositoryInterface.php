@@ -6,5 +6,6 @@ interface CategoryRepositoryInterface {
     public function getAllCategory();
     public function get();
     public function checkCategoryExist($id);
+    public function findExceptCategory($id);
 }
 ?>
